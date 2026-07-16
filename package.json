@@ -1,0 +1,18 @@
+{
+  "name": "trip-planner",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend internship assignment — AI trip planner. Root scripts boot both the backend and frontend together.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "concurrently -n backend,frontend -c blue,magenta \"npm run start --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "backend": "npm run start --workspace=backend",
+    "frontend": "npm run dev --workspace=frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

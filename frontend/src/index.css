@@ -1,0 +1,627 @@
+/* ---------------------------------------------------------------------
+   Design tokens
+   Direction: a vintage travel-poster / transit-map feel — deep ink navy,
+   warm paper, an amber "stamp" accent and a teal "route" accent. The
+   signature element is the vertical route-line connecting stops within a
+   day, like a subway diagram.
+------------------------------------------------------------------------ */
+:root {
+  --color-paper: #f6f2ea;
+  --color-paper-raised: #ffffff;
+  --color-ink: #1b2a41;
+  --color-ink-soft: #5b6b82;
+  --color-line: #e3ddcf;
+  --color-accent: #d98e3f;
+  --color-accent-soft: #f3e2c8;
+  --color-teal: #2f6f6b;
+  --color-teal-dark: #204b48;
+  --color-plum: #7c5b8e;
+  --color-danger: #b5473c;
+  --color-danger-soft: #f4d9d5;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 1px 2px rgba(27, 42, 65, 0.06), 0 6px 20px rgba(27, 42, 65, 0.05);
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --color-paper: #141c2b;
+  --color-paper-raised: #1c273b;
+  --color-ink: #eef1f6;
+  --color-ink-soft: #9aa8c0;
+  --color-line: #2c3a52;
+  --color-accent: #e4a05c;
+  --color-accent-soft: #3a2f22;
+  --color-teal: #5fada7;
+  --color-teal-dark: #3d7d78;
+  --color-plum: #a685bb;
+  --color-danger: #e08277;
+  --color-danger-soft: #3c2422;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Shell
+------------------------------------------------------------------------ */
+.app-shell {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0 18px;
+}
+
+.app-header__brand {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-header__brand em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.app-header__mark {
+  color: var(--color-teal);
+  font-size: 1.1rem;
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-main {
+  flex: 1;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.app-footer {
+  padding: 18px 0 28px;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-ink-soft);
+  font-size: 0.78rem;
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Trip form
+------------------------------------------------------------------------ */
+.trip-form {
+  background: var(--color-paper-raised);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trip-form__label {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.trip-form__textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 84px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.trip-form__textarea:disabled {
+  opacity: 0.6;
+}
+
+.trip-form__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.trip-form__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px dashed var(--color-line);
+  background: transparent;
+  color: var(--color-ink-soft);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--color-teal);
+  color: var(--color-teal);
+}
+
+/* ---------------------------------------------------------------------
+   Buttons
+------------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+:root[data-theme="dark"] .btn--primary {
+  background: var(--color-accent);
+  color: #1b1204;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+.btn--small {
+  padding: 6px 13px;
+  font-size: 0.78rem;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-raised);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.icon-btn:hover:not(:disabled) {
+  color: var(--color-teal);
+  border-color: var(--color-teal);
+}
+
+.icon-btn--danger:hover:not(:disabled) {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.icon-btn--large {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+}
+
+/* ---------------------------------------------------------------------
+   Status panels (loading / error / empty)
+------------------------------------------------------------------------ */
+.status-panel {
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper-raised);
+}
+
+.status-panel__title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.status-panel__message {
+  color: var(--color-ink-soft);
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+.status-panel--error {
+  border-color: var(--color-danger-soft);
+  background: color-mix(in srgb, var(--color-danger-soft) 40%, var(--color-paper-raised));
+}
+
+.status-panel__details {
+  text-align: left;
+  color: var(--color-ink-soft);
+  font-size: 0.8rem;
+  max-width: 420px;
+  margin: 0 auto 16px;
+}
+
+.route-spinner {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.route-spinner__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  animation: route-bounce 1s infinite ease-in-out;
+}
+
+.route-spinner__dot:nth-child(2) {
+  animation-delay: 0.15s;
+  background: var(--color-accent);
+}
+
+.route-spinner__dot:nth-child(3) {
+  animation-delay: 0.3s;
+  background: var(--color-plum);
+}
+
+@keyframes route-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Itinerary
+------------------------------------------------------------------------ */
+.itinerary__header {
+  margin-bottom: 4px;
+}
+
+.itinerary__header h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin: 0 0 6px;
+}
+
+.itinerary__summary {
+  color: var(--color-ink-soft);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.itinerary__days {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.day-card {
+  background: var(--color-paper-raised);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.day-card__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.day-card__number {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+  background: color-mix(in srgb, var(--color-teal) 12%, transparent);
+  padding: 4px 9px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.day-card__theme {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.day-card__chevron {
+  color: var(--color-ink-soft);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.day-card--expanded .day-card__chevron {
+  transform: rotate(180deg);
+}
+
+.day-card__content {
+  padding: 0 18px 18px;
+}
+
+.day-card__empty {
+  color: var(--color-ink-soft);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 8px 0 4px;
+}
+
+/* Signature element: a vertical route line strung through the stops, like a
+   transit map, with each stop's icon sitting on the line as a "station". */
+.route-line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.route-line::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-line) 0,
+    var(--color-line) 5px,
+    transparent 5px,
+    transparent 9px
+  );
+}
+
+.stop-card {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.stop-card__marker {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-paper-raised);
+  border: 2px solid var(--stop-color, var(--color-teal));
+  color: var(--stop-color, var(--color-teal));
+}
+
+.stop-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.stop-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-soft);
+  margin-bottom: 3px;
+}
+
+.stop-card__type {
+  color: var(--stop-color, var(--color-teal));
+  font-weight: 600;
+}
+
+.stop-card__name {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 0 0 3px;
+}
+
+.stop-card__description {
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.stop-card__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.add-stop-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px dashed var(--color-line);
+  color: var(--color-ink-soft);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.add-stop-trigger:hover {
+  border-color: var(--color-teal);
+  color: var(--color-teal);
+}
+
+.add-stop-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.add-stop-form input {
+  flex: 1;
+  min-width: 160px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------------
+   Mobile
+------------------------------------------------------------------------ */
+@media (max-width: 520px) {
+  .app-shell {
+    padding: 0 14px;
+  }
+
+  .app-header__brand {
+    font-size: 1.15rem;
+  }
+
+  .trip-form {
+    padding: 16px;
+  }
+
+  .trip-form__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .trip-form__row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .itinerary__header h2 {
+    font-size: 1.3rem;
+  }
+
+  .day-card__theme {
+    font-size: 0.95rem;
+  }
+
+  .stop-card__controls {
+    flex-direction: row;
+  }
+}
