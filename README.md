@@ -158,7 +158,14 @@ Instead of crashing, meaningful error messages are displayed to the user.
 
 ## Time Spent
 
-Approximately **8 hours**.
+Approximately **8 hours**, including:
+
+- Project planning
+- Frontend development
+- Backend API integration
+- Gemini AI integration
+- Testing and debugging
+- Documentation
 
 ---
 
